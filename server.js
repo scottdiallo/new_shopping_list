@@ -25,7 +25,14 @@ Storage.prototype.delete = function (id){ //created a delete method
         }
     }
 };
-
+Storage.prototype.modify = function(newObject){ //
+        for (var arrayIndex in this.items) {
+            if (newObject.id === this.items[arrayIndex].id){
+                this.items[arrayIndex] = newObject;
+                return true;
+            }
+        }
+};
 
 var storage = new Storage();
 storage.add('Broad beans');
@@ -56,13 +63,23 @@ app.delete('/items/:id', jsonParser, function(req, res) {
 
     var itemId = parseInt(req.params.id, 10);
 
-    storage.delete(itemId);
-
     if (!storage.delete(itemId)) {
         return res.sendStatus(400);
     } else {
         res.status(201).json(storage.items);
     }
+});
+
+app.put('/items/:id', jsonParser, function(req, res) {
+    // var itemId = parseInt(req.params.id, 10);
+    if (!storage.modify(req.body)){
+        return res.sendStatus(400);
+    } else {
+        res.status(201).json(storage.items);
+    }
+
+    console.log(storage.items);
+
 });
 
 
