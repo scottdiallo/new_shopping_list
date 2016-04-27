@@ -1,5 +1,5 @@
 var express = require('express');
-var bodyParser = require('bodyParser');
+var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var Storage = function() { // constructor
     this.items = [];
@@ -32,4 +32,10 @@ app.post('/items', jsonParser, function(req, res) {
     var item = storage.add(req.body.name);
     res.status(201).json(item);
 });
+
+app.delete('/items/:id', jsonParser, function(req, res) {
+    var itemID = req.params.id;
+    if(!req.)
+});
+
 app.listen(process.env.PORT || 8080);
