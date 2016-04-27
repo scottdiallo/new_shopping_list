@@ -18,14 +18,13 @@ Storage.prototype.add = function(name) { // created a method .add
 
 Storage.prototype.delete = function (id){ //created a delete method
     for (var arrayIndex in this.items) { //created a for in loop that loops through the this.items array
+
         if (id === this.items[arrayIndex].id){
             this.items.splice(arrayIndex, 1);
+            return true;
         }
-        //console.log(this.items[arrayIndex].id); //logging the id arrayIndex of the object in the this.items array
     }
 };
-
-for (var i = 0; i < this.items.length; i++)
 
 
 var storage = new Storage();
@@ -34,7 +33,7 @@ storage.add('Tomatoes');
 storage.add('Peppers');
 storage.add('Cologne');
 
-storage.delete(2);
+storage.delete(1);
 console.log(storage);
 
 var app = express();
@@ -43,6 +42,7 @@ app.use(express.static('public'));
 app.get('/items', function(req, res) {
     res.json(storage.items);
 });
+
 app.post('/items', jsonParser, function(req, res) {
     if (!req.body) {
         return res.sendStatus(400);
@@ -52,11 +52,18 @@ app.post('/items', jsonParser, function(req, res) {
     res.status(201).json(item);
 });
 
-/* app.delete('/items/:id', jsonParser, function(req, res) {
+app.delete('/items/:id', jsonParser, function(req, res) {
 
-    var itemID = req.params.id;
-    if(!req.)
+    var itemId = parseInt(req.params.id, 10);
+
+    storage.delete(itemId);
+
+    if (!storage.delete(itemId)) {
+        return res.sendStatus(400);
+    } else {
+        res.status(201).json(storage.items);
+    }
 });
-*/
+
 
 app.listen(process.env.PORT || 8080);
